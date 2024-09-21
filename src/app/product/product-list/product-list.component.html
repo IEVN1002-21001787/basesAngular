@@ -8,7 +8,7 @@
                 Filtra por:
             </div>
             <div class="col-md-4">
-                <input type="text" class="form-control">
+                <input type="text" [(ngModel)]="listFilter" class="form-control">
             </div>
         </div>
         <div class="row">
@@ -20,7 +20,9 @@
         <table class="table"*ngIf="productos.length">
             <thead>
                 <tr>
-                    <th>Imagen</th>
+                    <th>
+                       <button class="btn btn-primary" (click)="muestImg()">{{muestraImg?'Oculta ':'Muestra '}}Imagen</button>
+                    </th>
                     <th>Modelo</th>
                     <th>Descripcion</th>
                     <th>Año</th>
@@ -30,13 +32,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let producto of productos">
-                    <td>{{producto.ImagenUrl}}</td>
+                <tr *ngFor="let producto of productos | productoFilter:listFilter">
+                    <td>
+                        <img [src]="producto.ImagenUrl"
+                        *ngIf="muestraImg"
+                        [title]="producto.Modelo"
+                        [style.width.px]="imageWidth"
+                        [style.margin.px]="imageMargin"
+                       ></td>
                     <td>{{producto.Modelo}}</td>
                     <td>{{producto.Descripcion}}</td>
-                    <td>{{producto.Year}}</td>
-                    <td>{{producto.Precio}}</td>
-                    <td>{{producto.Marca}}</td>
+                    <td>{{producto.Year | date}}</td>
+                    <td>{{producto.Precio | currency}}</td>
+                    <td>{{producto.Marca | uppercase}}</td>
                     <td>{{producto.Color}}</td>
                 </tr>
             </tbody>
